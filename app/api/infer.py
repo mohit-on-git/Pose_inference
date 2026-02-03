@@ -2,7 +2,7 @@ from fastapi import  File, UploadFile, APIRouter, HTTPException
 from ..models.schemas import PoseInferenceResponse
 import numpy as np
 import cv2
-from ..services.pose import infer_pose
+from ..services import pose_service
 
 router = APIRouter()
 
@@ -45,7 +45,7 @@ async def upload_photo(image: UploadFile = File(...)) -> PoseInferenceResponse:
     #         "detected": False,
     #         "keypoints_count": 0}
 
-    landmark = infer_pose(img_rgb)
+    landmark = pose_service.infer_pose_landmarks(img_rgb)
     detected = landmark is not None
     keypoints = len(landmark) if landmark else 0
 
